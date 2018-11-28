@@ -11,5 +11,3 @@ RUN echo '{"username":"septt48","key":"c0e2e64e4b92dc52fdaf68973403176b"}' > ~/.
 RUN kaggle datasets download -d san-francisco/sf-police-calls-for-service-and-incidents
 RUN mkdir data
 RUN unzip san-francisco/sf-police-calls-for-service-and-incidents.zip data
-
-CMD ["python", "app.py"]
