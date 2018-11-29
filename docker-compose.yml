@@ -10,7 +10,7 @@ services:
      - "/var/run/postgres/postgres.sock:/var/run/postgres/postgres.sock"
      - "dbdata:/var/lib/postgresql/data"
     ports:
-      - "5000:5000"
+     - "5000:5000
 
   dataset1:
     build: .
@@ -31,6 +31,4 @@ services:
       - type: bind
         source: ./static
         target: /opt/app/static
-    ports:
-      - "5000:5000"
 
