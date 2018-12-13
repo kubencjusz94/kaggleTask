@@ -1,34 +1,26 @@
 version: '3'
 services:
   db:
-    image: postgres 
+    image: postgres
     environment:
-      POSTGRES_PASSWORD: 'user'
-      POSTGRES_DB: 'KaggleDataset'
-    restart: always
+      POSTGRES_USER: 'user'
+      POSTGRES_PASSWORD: 'password'
+      POSTGRES_DB: 'policeCalls'
     volumes:
-     - "/var/run/postgres/postgres.sock:/var/run/postgres/postgres.sock"
-     - "dbdata:/var/lib/postgresql/data"
-    ports:
-     - "5000:5000
-
-  dataset1:
-    build: .
-    context: .dataset
-    dockerile: Dockerfile-dataset
-    tmpfs:
-      - /run
-
+      - postgres_data:/var/lib/postgresql/data/
+  dataset:
+    build:
+      context: ./dataset
+      dockerfile: Dockerfile-dataset
   web:
-    context: ./web
-    dockerfile: Dockerile-web
-    volumes:
-      - type: volume
-        source: mydata
-        target: /data
-        volume:
-          nocopy: true
-      - type: bind
-        source: ./static
-        target: /opt/app/static
+    depends_on:
+      - db
+    ports:
+      - 8001:8001
+    build:
+      context: ./web
+      dockerfile: Dockerfile-web
+    command: ["adev", "runserver"]
 
+volumes:
+  postgres_data:
