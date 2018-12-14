@@ -1,4 +1,4 @@
-flask
 kaggle
 pandas
 sqlalchemy
+psycopg2

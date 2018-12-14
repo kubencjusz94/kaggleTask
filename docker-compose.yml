@@ -2,25 +2,37 @@ version: '3'
 services:
   db:
     image: postgres
+    container_name: db-cont
+    ports:
+      - '5432:5432'
     environment:
       POSTGRES_USER: 'user'
-      POSTGRES_PASSWORD: 'password'
+      POSTGRES_PASSWORD: 'user'
       POSTGRES_DB: 'policeCalls'
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
+      - postgres_data:/var/lib/db/
   dataset:
     build:
       context: ./dataset
       dockerfile: Dockerfile-dataset
+    container_name: get-data-cont
+    depends_on:
+      - db
+    tmpfs:
+      - /run
+      - /var/cache
+    command: ["python3", "app.py"]
   web:
     depends_on:
       - db
     ports:
-      - 8001:8001
+      - '8001:8001'
+      - '8000:8000'
     build:
       context: ./web
       dockerfile: Dockerfile-web
     command: ["adev", "runserver"]
+    container_name: api-cont
 
 volumes:
   postgres_data:
